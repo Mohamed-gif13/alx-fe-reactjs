@@ -1,9 +1,7 @@
 import React from 'react';
 
-// Crée un contexte avec des données par défaut (si nécessaire)
-const UserContext = React.createContext({
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-});
+// Create the context
+const UserContext = React.createContext();
 
+// Export the context
 export default UserContext;
