@@ -4,7 +4,7 @@ import UserProfile from './UserProfile';
 import MainContent from './MainContent';
 import Footer from './Footer';
 import Counter from './Counter'; // Si tu veux laisser le compteur ici
-import UserContext from './UserContext'; // Import du UserContext
+import UserContext from './components/UserContext'; // Import du UserContext
 
 // Données de l'utilisateur à fournir via le contexte
 const userData = { 
