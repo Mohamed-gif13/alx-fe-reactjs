@@ -6,20 +6,25 @@ import WelcomeMessage from './components/WelcomeMessage'; // Importation de Welc
 import Header from './components/Header'; // Importation du Header
 import MainContent from './components/MainContent'; // Importation du MainContent
 import Footer from './components/Footer'; // Importation du Footer
+import UserProfile from './components/UserProfile'; // Importation du UserProfile
 
 function App() {
   const [count, setCount] = useState(0);
 
   return (
     <>
-      {/* Composant WelcomeMessage de Task 1 */}
       <WelcomeMessage />
-
-      {/* Composants de Task 2 */}
-      <Header /> {/* Affiche le Header */}
-      <MainContent /> {/* Affiche le MainContent */}
-      <Footer /> {/* Affiche le Footer */}
+      <Header />
+      <MainContent />
+      <Footer />
       
+      {/* Composant UserProfile avec les props */}
+      <UserProfile 
+        name="John Doe" 
+        age="30" 
+        bio="Loves coding and playing video games."
+      />
+
       <div>
         <a href="https://vite.dev" target="_blank">
           <img src={viteLogo} className="logo" alt="Vite logo" />
