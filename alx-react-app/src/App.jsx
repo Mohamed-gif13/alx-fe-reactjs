@@ -18,11 +18,11 @@ function App() {
       <MainContent />
       <Footer />
       
-      {/* Composant UserProfile avec les props */}
+      {/* Composant UserProfile avec les props exactes */}
       <UserProfile 
-        name="John Doe" 
-        age="30" 
-        bio="Loves coding and playing video games."
+        name="Alice" 
+        age="25" 
+        bio="Loves hiking and photography"
       />
 
       <div>
