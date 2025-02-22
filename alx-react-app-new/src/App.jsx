@@ -3,19 +3,27 @@ import Header from './Header';
 import UserProfile from './UserProfile';
 import MainContent from './MainContent';
 import Footer from './Footer';
-import Counter from './Counter'; // Importation du composant Counter
+import Counter from './Counter'; // Si tu veux laisser le compteur ici
+import UserContext from './UserContext'; // Import du UserContext
+
+// Données de l'utilisateur à fournir via le contexte
+const userData = { 
+  name: "Jane Doe", 
+  email: "jane.doe@example.com" 
+};
 
 function App() {
   return (
-    <div>
-      <Header />
-      <UserProfile name="John Doe" age="30" bio="Web Developer" />
-      <MainContent />
-      <Counter />  {/* Insertion du composant Counter ici */}
-      <Footer />
-    </div>
+    <UserContext.Provider value={userData}>  {/* Fournir le contexte */}
+      <div>
+        <Header />
+        <UserProfile /> {/* Ce composant va consommer les données du UserContext */}
+        <MainContent />
+        <Counter />
+        <Footer />
+      </div>
+    </UserContext.Provider>
   );
 }
 
 export default App;
-
