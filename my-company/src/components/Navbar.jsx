@@ -4,7 +4,16 @@ import { Link } from 'react-router-dom';
 function Navbar() {
   return (
     <nav style={{ padding: '10px', backgroundColor: '#333', color: '#fff' }}>
-      <ul style={{ listStyleType: 'none', margin: 0, padding: 0, display: 'flex' }}>
+      <ul 
+        style={{ 
+          listStyleType: 'none', 
+          margin: 0, 
+          padding: 0, 
+          display: 'flex',
+          justifyContent: 'space-between',  // Ajout de justifyContent
+          width: '100%'  // Pour s'assurer que les éléments occupent toute la largeur
+        }}
+      >
         <li>
           <Link to="/" style={{ color: 'white', textDecoration: 'none', padding: '10px' }}>
             Home
