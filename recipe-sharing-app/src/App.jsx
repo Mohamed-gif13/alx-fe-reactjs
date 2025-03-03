@@ -1,16 +1,20 @@
 // src/App.jsx
-
 import React from 'react';
-import RecipeList from './components/RecipeList';  // Importation du composant RecipeList
-import AddRecipeForm from './components/AddRecipeForm';  // Importation du composant AddRecipeForm
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import RecipeList from './components/RecipeList';
+import RecipeDetails from './components/RecipeDetails';
 
 const App = () => {
   return (
-    <div>
-      <h1>Application de partage de recettes</h1>
-      <AddRecipeForm />  {/* Affichage du formulaire pour ajouter une recette */}
-      <RecipeList />  {/* Affichage de la liste des recettes */}
-    </div>
+    <Router>
+      <div>
+        <h1>Recipe Sharing Application</h1>
+        <Routes>
+          <Route path="/" element={<RecipeList />} />
+          <Route path="/recipe/:recipeId" element={<RecipeDetails />} />
+        </Routes>
+      </div>
+    </Router>
   );
 };
 
