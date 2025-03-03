@@ -27,21 +27,21 @@ function RegistrationForm() {
         type="text"
         name="username"
         placeholder="Username"
-        value={form.username}
+        value={form.username}  // Liaison de la valeur avec l'état
         onChange={handleChange}
       />
       <input
         type="email"
         name="email"
         placeholder="Email"
-        value={form.email}
+        value={form.email}  // Liaison de la valeur avec l'état
         onChange={handleChange}
       />
       <input
         type="password"
         name="password"
         placeholder="Password"
-        value={form.password}
+        value={form.password}  // Liaison de la valeur avec l'état
         onChange={handleChange}
       />
       <button type="submit">Register</button>
