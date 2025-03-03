@@ -1,25 +1,25 @@
-// src/components/RecipeList.jsx
-
-import React from 'react';
-import { useRecipeStore } from './recipeStore';  // Import du store Zustand
+import React, { useEffect } from 'react';
+import { useRecipeStore } from './recipeStore';
 
 const RecipeList = () => {
-  const recipes = useRecipeStore(state => state.recipes);  // Accéder aux recettes depuis le store
+  const recipes = useRecipeStore(state => state.filteredRecipes);
+
+  useEffect(() => {
+    // Applique le filtre au démarrage
+    useRecipeStore.getState().filterRecipes();
+  }, []);
 
   return (
     <div>
-      <h2>Liste des Recettes</h2>
-      {recipes.length === 0 ? (
-        <p>Aucune recette disponible.</p>
+      {recipes.length > 0 ? (
+        recipes.map(recipe => (
+          <div key={recipe.id}>
+            <h2>{recipe.title}</h2>
+            <p>{recipe.description}</p>
+          </div>
+        ))
       ) : (
-        <ul>
-          {recipes.map(recipe => (
-            <li key={recipe.id}>
-              <h3>{recipe.title}</h3>
-              <p>{recipe.description}</p>
-            </li>
-          ))}
-        </ul>
+        <p>No recipes found</p>
       )}
     </div>
   );
