@@ -1,27 +1,32 @@
-import create from 'zustand';
 
-const useRecipeStore = create(set => ({
-  recipes: [],
-  searchTerm: '',
-  filteredRecipes: [],
-  
-  // Action pour ajouter une recette
-  addRecipe: (newRecipe) => set(state => ({
-    recipes: [...state.recipes, newRecipe],
-  })),
-  
-  // Action pour définir (mettre à jour) les recettes
-  setRecipes: (newRecipes) => set({ recipes: newRecipes }),
+const recipeStore = {
+  recipes: [], // Array to store recipes
 
-  // Action pour définir le terme de recherche
-  setSearchTerm: (term) => set({ searchTerm: term }),
+  // Add a new recipe
+  addRecipe: function(recipe) {
+    this.recipes.push(recipe);
+  },
 
-  // Action pour filtrer les recettes en fonction du terme de recherche
-  filterRecipes: () => set(state => ({
-    filteredRecipes: state.recipes.filter(recipe =>
-      recipe.title.toLowerCase().includes(state.searchTerm.toLowerCase())
-    ),
-  })),
-}));
+  // Update an existing recipe by ID
+  updateRecipe: function(id, updatedRecipe) {
+    const index = this.recipes.findIndex(recipe => recipe.id === id);
+    if (index !== -1) {
+      this.recipes[index] = { ...this.recipes[index], ...updatedRecipe };
+    } else {
+      console.log("Recipe not found!");
+    }
+  },
 
-export { useRecipeStore };
+  // Delete a recipe by ID
+  deleteRecipe: function(id) {
+    const index = this.recipes.findIndex(recipe => recipe.id === id);
+    if (index !== -1) {
+      this.recipes.splice(index, 1);
+    } else {
+      console.log("Recipe not found!");
+    }
+  },
+};
+
+export default recipeStore;
+
