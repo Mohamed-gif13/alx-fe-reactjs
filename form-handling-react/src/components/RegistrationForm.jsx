@@ -2,9 +2,9 @@ import React, { useState } from 'react';
 
 function RegistrationForm() {
   const [form, setForm] = useState({
-    username: 'JohnDoe',  // Valeur par défaut pour le nom d'utilisateur
-    email: 'johndoe@example.com',  // Valeur par défaut pour l'email
-    password: 'password123',  // Valeur par défaut pour le mot de passe
+    username: '',  // Valeur initiale vide pour 'username'
+    email: '',     // Valeur initiale vide pour 'email'
+    password: '',  // Valeur initiale vide pour 'password'
   });
 
   const handleChange = (e) => {
@@ -27,21 +27,21 @@ function RegistrationForm() {
         type="text"
         name="username"
         placeholder="Username"
-        value={form.username}  // Valeur de 'username'
-        onChange={handleChange}
+        value={form.username}  // Utilisation de form.username
+        onChange={handleChange} 
       />
       <input
         type="email"
         name="email"
         placeholder="Email"
-        value={form.email}  // Valeur de 'email'
+        value={form.email}  // Utilisation de form.email
         onChange={handleChange}
       />
       <input
         type="password"
         name="password"
         placeholder="Password"
-        value={form.password}  // Valeur de 'password'
+        value={form.password}  // Utilisation de form.password
         onChange={handleChange}
       />
       <button type="submit">Register</button>
@@ -50,3 +50,4 @@ function RegistrationForm() {
 }
 
 export default RegistrationForm;
+
