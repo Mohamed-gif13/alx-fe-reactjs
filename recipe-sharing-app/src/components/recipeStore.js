@@ -8,6 +8,7 @@ const useRecipeStore = create((set) => ({
     set((state) => ({
       recipes: state.recipes.filter((recipe) => recipe.id !== id),
     })),
+  setRecipes: (recipes) => set({ recipes }),  // Méthode ajoutée pour définir la liste des recettes
   clearRecipes: () => set({ recipes: [] }),
 }));
 
