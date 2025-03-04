@@ -8,16 +8,16 @@ function App() {
   return (
     <Router>
       <Routes>
-        {/* Route parent pour le profil */}
+        {/* Parent route for Profile */}
         <Route path="/profile" element={<Profile />}>
-          {/* Routes imbriquées */}
-          <Route path="details" element={<ProfileDetails />} /> {/* Détails du profil */}
-          <Route path="settings" element={<ProfileSettings />} /> {/* Paramètres du profil */}
+          {/* Nested routes */}
+          <Route path="details" element={<ProfileDetails />} /> {/* Profile Details */}
+          <Route path="settings" element={<ProfileSettings />} /> {/* Profile Settings */}
         </Route>
 
-        {/* Vous pouvez ajouter d'autres routes ici */}
-        <Route path="/" element={<h1>Page d'accueil</h1>} /> {/* Route pour la page d'accueil */}
-        <Route path="*" element={<h1>404 - Page non trouvée</h1>} /> {/* Route pour les pages non trouvées */}
+        {/* Other routes */}
+        <Route path="/" element={<h1>Home Page</h1>} /> {/* Home Page */}
+        <Route path="*" element={<h1>404 - Page Not Found</h1>} /> {/* 404 Page */}
       </Routes>
     </Router>
   );
