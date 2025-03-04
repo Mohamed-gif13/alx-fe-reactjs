@@ -3,7 +3,7 @@ import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
 import Profile from './components/Profile';
 import ProfileDetails from './components/ProfileDetails';
 import ProfileSettings from './components/ProfileSettings';
-import BlogPost from './components/BlogPost'; // Ajout du composant dynamique
+import BlogPost from './components/BlogPost';
 import ProtectedRoute from './components/ProtectedRoute'; // Import du composant ProtectedRoute
 import Dashboard from './components/Dashboard'; // Import du composant Dashboard
 
@@ -28,6 +28,9 @@ function App() {
           path="/dashboard"
           element={<ProtectedRoute element={<Dashboard />} />}
         />
+
+        {/* Route pour la page de connexion (exemple) */}
+        <Route path="/login" element={<h1>Page de Connexion</h1>} />
       </Routes>
     </Router>
   );

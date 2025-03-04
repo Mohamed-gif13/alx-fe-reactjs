@@ -2,7 +2,8 @@
 import { Navigate } from 'react-router-dom';
 
 function ProtectedRoute({ element }) {
-  const isAuthenticated = true; // Remplacez par votre logique d'authentification
+  // Exemple de vérification d'authentification simple
+  const isAuthenticated = localStorage.getItem('isAuthenticated'); // Vérifiez si l'utilisateur est connecté
 
   // Si l'utilisateur est authentifié, affichez le composant demandé
   if (isAuthenticated) {
