@@ -1,4 +1,4 @@
-import formikForm from './components/formikForm';
+import FormikForm from './components/formikForm';
 import { Formik, Form, Field, ErrorMessage } from "formik";
 import * as Yup from "yup";
 
