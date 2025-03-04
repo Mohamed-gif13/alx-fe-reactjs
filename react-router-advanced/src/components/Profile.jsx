@@ -1,5 +1,5 @@
 // src/components/Profile.jsx
-import { Outlet, Link } from 'react-router-dom';
+import { Outlet, Link } from 'react-router-dom'; // Assurez-vous d'importer correctement Outlet et Link
 
 function Profile() {
   return (
@@ -8,10 +8,10 @@ function Profile() {
       <nav>
         <ul>
           <li>
-            <Link to="details">Profile Details</Link>
+            <Link to="details">Profile Details</Link> {/* Lien vers les détails du profil */}
           </li>
           <li>
-            <Link to="settings">Profile Settings</Link>
+            <Link to="settings">Profile Settings</Link> {/* Lien vers les paramètres du profil */}
           </li>
         </ul>
       </nav>
