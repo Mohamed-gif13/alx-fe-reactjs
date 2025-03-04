@@ -4,18 +4,21 @@ const RegistrationForm = () => {
   const [username, setUsername] = useState("");
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [error, setError] = useState("");
+  const [errors, setErrors] = useState({});
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    let newErrors = {};
 
-    if (!username || !email || !password) {
-      setError("Tous les champs sont obligatoires.");
-      return;
-    }
+    if (!username) newErrors.username = "Le nom d'utilisateur est requis.";
+    if (!email) newErrors.email = "L'email est requis.";
+    if (!password) newErrors.password = "Le mot de passe est requis.";
+
+    setErrors(newErrors);
+
+    if (Object.keys(newErrors).length > 0) return;
 
     console.log("Form Submitted", { username, email, password });
-    setError("");
   };
 
   return (
@@ -25,29 +28,31 @@ const RegistrationForm = () => {
         <input
           type="text"
           name="username"
-          value={username} // Correction ici
+          value={username}
           onChange={(e) => setUsername(e.target.value)}
         />
+        {errors.username && <p style={{ color: "red" }}>{errors.username}</p>}
       </div>
       <div>
         <label>Email:</label>
         <input
           type="email"
           name="email"
-          value={email} // Correction ici
+          value={email}
           onChange={(e) => setEmail(e.target.value)}
         />
+        {errors.email && <p style={{ color: "red" }}>{errors.email}</p>}
       </div>
       <div>
         <label>Mot de passe:</label>
         <input
           type="password"
           name="password"
-          value={password} // Correction ici
+          value={password}
           onChange={(e) => setPassword(e.target.value)}
         />
+        {errors.password && <p style={{ color: "red" }}>{errors.password}</p>}
       </div>
-      {error && <p style={{ color: "red" }}>{error}</p>}
       <button type="submit">S'inscrire</button>
     </form>
   );
