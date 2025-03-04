@@ -8,14 +8,14 @@ function Profile() {
       <nav>
         <ul>
           <li>
-            <Link to="details">Profile Details</Link>
+            <Link to="details">Profile Details</Link> {/* Link to nested route */}
           </li>
           <li>
-            <Link to="settings">Profile Settings</Link>
+            <Link to="settings">Profile Settings</Link> {/* Link to nested route */}
           </li>
         </ul>
       </nav>
-      <Outlet /> {/* This will render either ProfileDetails or ProfileSettings based on the URL */}
+      <Outlet /> {/* Renders nested routes here */}
     </div>
   );
 }
