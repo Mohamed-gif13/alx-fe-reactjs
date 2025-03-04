@@ -1,5 +1,5 @@
 // src/components/Profile.jsx
-import { Outlet, Link } from 'react-router-dom'; // Assurez-vous d'importer correctement Outlet et Link
+import { Outlet, Link } from 'react-router-dom';
 
 function Profile() {
   return (
@@ -8,14 +8,14 @@ function Profile() {
       <nav>
         <ul>
           <li>
-            <Link to="details">Profile Details</Link> {/* Lien vers les détails du profil */}
+            <Link to="details">Profile Details</Link>
           </li>
           <li>
-            <Link to="settings">Profile Settings</Link> {/* Lien vers les paramètres du profil */}
+            <Link to="settings">Profile Settings</Link>
           </li>
         </ul>
       </nav>
-      <Outlet /> {/* Affiche les sous-composants ici */}
+      <Outlet /> {/* This will render either ProfileDetails or ProfileSettings based on the URL */}
     </div>
   );
 }

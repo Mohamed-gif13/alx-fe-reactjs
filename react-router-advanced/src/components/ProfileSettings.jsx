@@ -1,7 +1,11 @@
 // src/components/ProfileSettings.jsx
 function ProfileSettings() {
-    return <div><h3>Profile Settings</h3></div>;
-  }
-  
-  export default ProfileSettings;
-  
+  return (
+    <div>
+      <h3>Profile Settings</h3>
+      <p>Here you can adjust your profile settings.</p>
+    </div>
+  );
+}
+
+export default ProfileSettings;
