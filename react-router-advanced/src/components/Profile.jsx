@@ -1,5 +1,7 @@
 // src/components/Profile.jsx
-import { Outlet, Link } from 'react-router-dom';
+import { Routes, Route, Link, Outlet } from 'react-router-dom';
+import ProfileDetails from './ProfileDetails'; // Import du composant ProfileDetails
+import ProfileSettings from './ProfileSettings'; // Import du composant ProfileSettings
 
 function Profile() {
   return (
@@ -8,14 +10,21 @@ function Profile() {
       <nav>
         <ul>
           <li>
-            <Link to="details">Profile Details</Link> {/* Link to nested route */}
+            <Link to="details">Profile Details</Link>
           </li>
           <li>
-            <Link to="settings">Profile Settings</Link> {/* Link to nested route */}
+            <Link to="settings">Profile Settings</Link>
           </li>
         </ul>
       </nav>
-      <Outlet /> {/* Renders nested routes here */}
+
+      {/* Définition des routes imbriquées directement dans Profile.jsx */}
+      <Routes>
+        <Route path="details" element={<ProfileDetails />} />
+        <Route path="settings" element={<ProfileSettings />} />
+      </Routes>
+
+      <Outlet /> {/* Pour afficher le sous-composant actif */}
     </div>
   );
 }

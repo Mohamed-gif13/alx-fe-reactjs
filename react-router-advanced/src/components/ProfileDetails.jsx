@@ -1,11 +1,6 @@
 // src/components/ProfileDetails.jsx
 function ProfileDetails() {
-  return (
-    <div>
-      <h3>Profile Details</h3>
-      <p>Here are the details of your profile.</p>
-    </div>
-  );
+  return <h3>Profile Details Content</h3>;
 }
 
 export default ProfileDetails;
