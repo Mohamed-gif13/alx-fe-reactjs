@@ -1,8 +1,8 @@
 // src/App.jsx
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import Profile from './components/Profile';
-import ProfileDetails from './components/ProfileDetails';
-import ProfileSettings from './components/ProfileSettings';
+import Profile from './components/Profile';  // Assurez-vous que le chemin est correct
+import ProfileDetails from './components/ProfileDetails';  // Assurez-vous que le chemin est correct
+import ProfileSettings from './components/ProfileSettings';  // Assurez-vous que le chemin est correct
 
 function App() {
   return (
