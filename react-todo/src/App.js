@@ -1,13 +1,18 @@
-import React from "react";
-import TodoList from "./components/TodoList";
+import React from 'react';
+import Welcome from './Welcome'; // Exemple de composant enfant
+import Counter from './Counter'; // Exemple d'un autre composant enfant
 
-const App = () => {
+function App() {
   return (
-    <div>
-      <h1>Todo List</h1>
-      <TodoList />
+    <div className="App">
+      <header>
+        <h1>Bienvenue dans l'application React</h1>
+      </header>
+      
+      <Welcome name="Mohamed" />  {/* Exemple d'utilisation de props */}
+      <Counter />  {/* Exemple d'utilisation de l'état */}
     </div>
   );
-};
+}
 
 export default App;
