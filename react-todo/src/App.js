@@ -1,6 +1,6 @@
 import React from 'react';
-import Welcome from './Welcome'; // Exemple de composant enfant
-import Counter from './Counter'; // Exemple d'un autre composant enfant
+import Welcome from './components/Welcome';  // Correct chemin relatif
+import Counter from './components/Counter';  // Correct chemin relatif
 
 function App() {
   return (
@@ -9,8 +9,8 @@ function App() {
         <h1>Bienvenue dans l'application React</h1>
       </header>
       
-      <Welcome name="Mohamed" />  {/* Exemple d'utilisation de props */}
-      <Counter />  {/* Exemple d'utilisation de l'état */}
+      <Welcome name="Mohamed" />  {/* Passage de la prop 'name' */}
+      <Counter />  {/* Utilisation du compteur */}
     </div>
   );
 }

@@ -1,9 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import './index.css';  // Assurez-vous que le chemin du fichier CSS est correct
-import App from './App'; // Importation du composant App
+import './index.css';  // Chemin relatif vers le CSS
+import App from './App';  // Chemin relatif vers App.js
 
-// Rendu de l'application dans l'élément avec l'id 'root'
 ReactDOM.render(
   <React.StrictMode>
     <App />
