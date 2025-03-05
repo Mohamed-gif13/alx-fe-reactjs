@@ -1,0 +1,49 @@
+.todo-container {
+    max-width: 400px;
+    margin: auto;
+    text-align: center;
+  }
+  
+  .todo-input {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    margin-bottom: 10px;
+  }
+  
+  input {
+    padding: 5px;
+    width: 200px;
+  }
+  
+  button {
+    padding: 5px 10px;
+    cursor: pointer;
+  }
+  
+  ul {
+    list-style: none;
+    padding: 0;
+  }
+  
+  li {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px;
+    background: #f4f4f4;
+    margin-bottom: 5px;
+    cursor: pointer;
+  }
+  
+  .completed {
+    text-decoration: line-through;
+    color: gray;
+  }
+  
+  .delete-btn {
+    background: red;
+    color: white;
+    border: none;
+    cursor: pointer;
+  }
+  
