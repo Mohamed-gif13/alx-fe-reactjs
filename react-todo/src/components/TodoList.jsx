@@ -1,6 +1,7 @@
+// src/components/TodoList.jsx
 import React, { useState } from "react";
-import "../styles.css";
-import AddTodoForm from "./AddTodoForm";
+import "../styles.css"; // Assurez-vous que le chemin vers le fichier CSS est correct
+import AddTodoForm from "./AddTodoForm"; // Assurez-vous que le chemin d'importation est correct
 
 const TodoList = () => {
   const [todos, setTodos] = useState([

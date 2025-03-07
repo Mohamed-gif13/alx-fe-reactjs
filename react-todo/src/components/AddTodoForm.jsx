@@ -1,24 +1,26 @@
-import React, { useState } from "react";
+// src/components/AddTodoForm.jsx
+import React, { useState } from 'react';
 
 const AddTodoForm = ({ addTodo }) => {
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    if (!text.trim()) return;
-    addTodo(text);
-    setText("");
+    if (text.trim()) {
+      addTodo(text);
+      setText(''); // Réinitialiser le champ après soumission
+    }
   };
 
   return (
-    <form onSubmit={handleSubmit} className="add-todo-form">
+    <form onSubmit={handleSubmit}>
       <input
         type="text"
-        placeholder="Ajouter une tâche"
         value={text}
         onChange={(e) => setText(e.target.value)}
+        placeholder="Ajouter une tâche"
       />
-      <button type="submit">➕</button>
+      <button type="submit">Ajouter</button>
     </form>
   );
 };
