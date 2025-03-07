@@ -36,5 +36,14 @@
     "@testing-library/jest-dom": "^6.6.3",
     "@testing-library/react": "^16.2.0",
     "jest": "^27.5.1"
+  },
+  "jest": {
+    "roots": [
+      "<rootDir>/src"
+    ],
+    "testMatch": [
+      "**/__tests__/**/*.test.js",
+      "**/__tests__/**/*.test.jsx"
+    ]
   }
 }

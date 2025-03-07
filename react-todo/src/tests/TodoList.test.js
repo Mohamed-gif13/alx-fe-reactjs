@@ -1,6 +1,6 @@
 // src/__tests__/TodoList.test.js
 import React from "react";
-import { render, screen } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import "@testing-library/jest-dom/extend-expect";
 import TodoList from "../components/TodoList"; // Assure-toi que le chemin est correct
 
