@@ -1,6 +1,6 @@
 // src/components/TodoList.test.js
 import { render, screen, fireEvent } from '@testing-library/react';
-import TodoList from './TodoList'; // Import the TodoList component
+import TodoList from "../components/TodoList"; // Import the TodoList component
 
 // Mock the AddTodoForm component to isolate testing the TodoList logic
 jest.mock('./AddTodoForm', () => {
