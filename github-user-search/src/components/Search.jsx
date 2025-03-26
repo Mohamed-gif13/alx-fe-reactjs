@@ -15,11 +15,10 @@ function Search() {
 
     try {
       const data = await fetchUserData(username);
-      if (data) {
-        setUserData(data);
-      } else {
+      if (!data) {
         throw new Error("User not found");
       }
+      setUserData(data);
     } catch (err) {
       setError("Looks like we can't find the user");
     } finally {
@@ -40,7 +39,7 @@ function Search() {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {error && <p>{error}</p>} {/* Message d'erreur ici */}
 
       {userData && (
         <div>
@@ -60,3 +59,4 @@ function Search() {
 }
 
 export default Search;
+
