@@ -1,3 +1,4 @@
+// github-user-search/src/components/Search.js
 import React, { useState } from 'react';
 import { fetchUserData } from '../services/githubService';
 
@@ -15,12 +16,9 @@ function Search() {
 
     try {
       const data = await fetchUserData(username);
-      if (!data) {
-        throw new Error("User not found");
-      }
       setUserData(data);
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError('Looks like we cant find the user');
     } finally {
       setLoading(false);
     }
@@ -39,15 +37,11 @@ function Search() {
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>} {/* Message d'erreur ici */}
+      {error && <p>{error}</p>}
 
       {userData && (
         <div>
-          <img
-            src={userData.avatar_url}
-            alt="User Avatar"
-            style={{ width: '100px', height: '100px' }}
-          />
+          <img src={userData.avatar_url} alt="User Avatar" style={{ width: '100px', height: '100px' }} />
           <h2>{userData.name || userData.login}</h2>
           <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
             GitHub Profile
@@ -59,4 +53,3 @@ function Search() {
 }
 
 export default Search;
-
