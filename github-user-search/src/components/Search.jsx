@@ -1,22 +1,24 @@
+// github-user-search/src/components/Search.js
 import React, { useState } from 'react';
-import { fetchUserData } from '../services/githubService'; // Corriger l'importation ici
+import { fetchUserData } from '../services/githubService';
 
 function Search() {
   const [username, setUsername] = useState('');
   const [userData, setUserData] = useState(null);
   const [loading, setLoading] = useState(false);
-  const [error, setError] = useState(false);
+  const [error, setError] = useState(null);
 
-  const handleSearch = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(false);
+    setError(null);
+    setUserData(null);
 
     try {
       const data = await fetchUserData(username);
       setUserData(data);
-    } catch (error) {
-      setError(true);
+    } catch (err) {
+      setError('Looks like we cant find the user');
     } finally {
       setLoading(false);
     }
@@ -24,27 +26,25 @@ function Search() {
 
   return (
     <div>
-      <form onSubmit={handleSearch}>
+      <form onSubmit={handleSubmit}>
         <input
           type="text"
+          placeholder="Enter GitHub username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          placeholder="Enter GitHub Username"
         />
         <button type="submit">Search</button>
       </form>
 
       {loading && <p>Loading...</p>}
-      {error && <p>Looks like we can't find the user</p>}
+      {error && <p>{error}</p>}
 
-      {userData && !loading && !error && (
+      {userData && (
         <div>
-          <h2>{userData.name}</h2>
-          <p><strong>Username:</strong> {userData.login}</p> {/* Affichage du login */}
-          <img src={userData.avatar_url} alt={userData.name} width="100" />
-          <p>{userData.bio}</p>
+          <img src={userData.avatar_url} alt="User Avatar" style={{ width: '100px', height: '100px' }} />
+          <h2>{userData.name || userData.login}</h2>
           <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
-            View Profile
+            GitHub Profile
           </a>
         </div>
       )}
