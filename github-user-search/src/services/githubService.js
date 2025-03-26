@@ -1,13 +1,22 @@
 import axios from 'axios';
 
-const fetchUserData = async (username, location, minRepos) => {
-  // Construire la requête pour GitHub API avec les nouveaux paramètres
-  const query = `${username} location:${location} repos:>=${minRepos}`;
-  
-  const response = await axios.get(`https://api.github.com/search/users?q=${query}`);
-  
-  // Retourner les résultats sous forme de liste d'utilisateurs
-  return response.data.items[0]; // Nous utilisons le premier utilisateur retourné
-};
+const API_URL = 'https://api.github.com/search/users';
 
-export { fetchUserData };
+export const fetchAdvancedUserData = async (username, location, minRepos) => {
+  try {
+    let query = `q=${username}`;
+    
+    if (location) {
+      query += `+location:${location}`;
+    }
+
+    if (minRepos) {
+      query += `+repos:>=${minRepos}`;
+    }
+
+    const response = await axios.get(`${API_URL}?${query}`);
+    return response.data;
+  } catch (error) {
+    throw new Error(error.message);
+  }
+};
