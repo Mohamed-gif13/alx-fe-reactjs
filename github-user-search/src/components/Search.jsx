@@ -40,6 +40,7 @@ function Search() {
       {userData && !loading && !error && (
         <div>
           <h2>{userData.name}</h2>
+          <p><strong>Username:</strong> {userData.login}</p> {/* Affichage du login */}
           <img src={userData.avatar_url} alt={userData.name} width="100" />
           <p>{userData.bio}</p>
           <a href={userData.html_url} target="_blank" rel="noopener noreferrer">
