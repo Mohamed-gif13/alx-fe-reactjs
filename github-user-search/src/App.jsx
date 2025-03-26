@@ -1,10 +1,11 @@
-import { useState } from 'react';
+import React from 'react';
+import UserSearch from './components/UserSearch';
 
 function App() {
   return (
     <div>
       <h1>GitHub User Search</h1>
-      <p>Start searching for GitHub users!</p>
+      <UserSearch />
     </div>
   );
 }
