@@ -1,11 +1,12 @@
-import React, { useState } from "react";
-import { fetchUserData, fetchAdvancedUserSearch } from "../services/githubService";
-import "./Search.css"; // Import des styles
+// github-user-search/src/components/Search.jsx
+import React, { useState } from 'react';
+import { searchUsers } from '../services/githubService';
+import './Search.css'; // Import Tailwind styles
 
 function Search() {
-  const [username, setUsername] = useState("");
-  const [location, setLocation] = useState("");
-  const [minRepos, setMinRepos] = useState("");
+  const [username, setUsername] = useState('');
+  const [location, setLocation] = useState('');
+  const [minRepos, setMinRepos] = useState('');
   const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
@@ -21,21 +22,12 @@ function Search() {
     setHasMore(true);
 
     try {
-      if (username && !location && !minRepos) {
-        // Recherche simple par username
-        const data = await fetchUserData(username);
-        setSearchResults([data]);
-      } else {
-        // Recherche avancée
-        const data = await fetchAdvancedUserSearch(username, location, minRepos);
-        if (data.length === 0) {
-          setError("Looks like we can't find the user");
-        }
-        setSearchResults(data);
-        setHasMore(data.length === 30);
-      }
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, 1);
+      setSearchResults(data.items);
+      setHasMore(data.items.length === 30); // Assuming 30 results per page
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -48,12 +40,13 @@ function Search() {
     const nextPage = page + 1;
 
     try {
-      const data = await fetchAdvancedUserSearch(username, location, minRepos, nextPage);
-      setSearchResults([...searchResults, ...data]);
-      setHasMore(data.length === 30);
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, nextPage);
+      setSearchResults([...searchResults, ...data.items]);
+      setHasMore(data.items.length === 30);
       setPage(nextPage);
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(err);
     } finally {
       setLoading(false);
     }
@@ -101,20 +94,20 @@ function Search() {
       </form>
 
       {loading && <p className="text-center">Loading...</p>}
-      {error && <p className="text-center text-red-500">{error}</p>}
 
-      {searchResults.length > 0 ? (
+      {error && <p className="text-center text-red-500">Looks like we cant find the user.</p>}
+
+      {searchResults.length > 0 && (
         <div>
           {searchResults.map((user) => (
             <div key={user.id} className="border rounded p-4 mb-4">
               <img src={user.avatar_url} alt="User Avatar" className="w-20 h-20 rounded-full mb-2" />
               <p>Login: {user.login}</p>
-              <p>Name: {user.name || "Not available"}</p>
-              <p>Location: {user.location || "Not available"}</p>
+              <p>Name: {user.name || 'Not available'}</p>
+              <p>Location: {user.location || 'Not available'}</p>
               <p>Repositories: {user.public_repos}</p>
               <p>
-                Profile:{" "}
-                <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+                Profile: <a href={user.html_url} target="_blank" rel="noopener noreferrer">
                   {user.html_url}
                 </a>
               </p>
@@ -129,8 +122,6 @@ function Search() {
             </button>
           )}
         </div>
-      ) : (
-        !loading && !error && <p className="text-center">Looks like we can't find the user</p>
       )}
     </div>
   );
