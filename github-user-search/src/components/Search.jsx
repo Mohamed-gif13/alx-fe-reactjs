@@ -16,14 +16,9 @@ function Search() {
   const fetchUserData = async (query, currentPage) => {
     try {
       const data = await searchUsers(query, currentPage);
-      
-      if (data.items.length === 0) {
-        setError("Looks like we can't find the user");
-      }
-
       return data.items;
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(true);  // Set error state to true on error
       return [];
     }
   };
@@ -31,7 +26,7 @@ function Search() {
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
-    setError(null);
+    setError(null);  // Reset error on new search
     setSearchResults([]);
     setPage(1);
     setHasMore(true);
@@ -102,7 +97,7 @@ function Search() {
 
       {loading && <p className="text-center">Loading...</p>}
 
-      {error && <p className="text-center text-red-500">{error}</p>}
+      {error && <p className="text-center text-red-500">Looks like we cant find the user</p>}
 
       {searchResults.length > 0 && (
         <div>
