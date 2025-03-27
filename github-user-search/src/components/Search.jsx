@@ -28,11 +28,14 @@ function Search() {
       } else {
         // Recherche avancée
         const data = await fetchAdvancedUserSearch(username, location, minRepos);
+        if (data.length === 0) {
+          setError("Looks like we can't find the user");
+        }
         setSearchResults(data);
         setHasMore(data.length === 30);
       }
     } catch (err) {
-      setError(err.message);
+      setError("Looks like we can't find the user");
     } finally {
       setLoading(false);
     }
@@ -50,7 +53,7 @@ function Search() {
       setHasMore(data.length === 30);
       setPage(nextPage);
     } catch (err) {
-      setError(err.message);
+      setError("Looks like we can't find the user");
     } finally {
       setLoading(false);
     }
@@ -100,7 +103,7 @@ function Search() {
       {loading && <p className="text-center">Loading...</p>}
       {error && <p className="text-center text-red-500">{error}</p>}
 
-      {searchResults.length > 0 && (
+      {searchResults.length > 0 ? (
         <div>
           {searchResults.map((user) => (
             <div key={user.id} className="border rounded p-4 mb-4">
@@ -126,6 +129,8 @@ function Search() {
             </button>
           )}
         </div>
+      ) : (
+        !loading && !error && <p className="text-center">Looks like we can't find the user</p>
       )}
     </div>
   );
