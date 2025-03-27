@@ -1,98 +1,128 @@
+// github-user-search/src/components/Search.jsx
 import React, { useState } from 'react';
-import { fetchUserData, fetchAdvancedUserSearch } from '../services/githubService';
+import { searchUsers } from '../services/githubService';
+import './Search.css'; // Import Tailwind styles
 
 function Search() {
   const [username, setUsername] = useState('');
   const [location, setLocation] = useState('');
   const [minRepos, setMinRepos] = useState('');
-  const [users, setUsers] = useState([]);
-  const [user, setUser] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
-  const handleSearch = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUsers([]);
-    setUser(null);
+    setSearchResults([]);
+    setPage(1);
+    setHasMore(true);
 
     try {
-      if (username && !location && !minRepos) {
-        // Recherche par username uniquement
-        const userData = await fetchUserData(username);
-        setUser(userData);
-      } else {
-        // Recherche avancée
-        const results = await fetchAdvancedUserSearch(username, location, minRepos);
-        setUsers(results);
-      }
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, 1);
+      setSearchResults(data.items);
+      setHasMore(data.items.length === 30); // Assuming 30 results per page
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoadMore = async () => {
+    if (!hasMore || loading) return;
+
+    setLoading(true);
+    const nextPage = page + 1;
+
+    try {
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, nextPage);
+      setSearchResults([...searchResults, ...data.items]);
+      setHasMore(data.items.length === 30);
+      setPage(nextPage);
+    } catch (err) {
+      setError(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="p-4">
-      <form onSubmit={handleSearch} className="flex flex-col gap-4 bg-gray-100 p-6 rounded-lg shadow-lg">
-        <input
-          type="text"
-          placeholder="GitHub Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          className="p-2 border rounded"
-        />
-        <input
-          type="text"
-          placeholder="Location"
-          value={location}
-          onChange={(e) => setLocation(e.target.value)}
-          className="p-2 border rounded"
-        />
-        <input
-          type="number"
-          placeholder="Min Repositories"
-          value={minRepos}
-          onChange={(e) => setMinRepos(e.target.value)}
-          className="p-2 border rounded"
-        />
-        <button type="submit" className="bg-blue-500 text-white p-2 rounded">Search</button>
+    <div className="container mx-auto p-4">
+      <form onSubmit={handleSubmit} className="mb-4">
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
+          <input
+            type="text"
+            placeholder="Enter GitHub username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Location:</label>
+          <input
+            type="text"
+            placeholder="Enter location"
+            value={location}
+            onChange={(e) => setLocation(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Min Repositories:</label>
+          <input
+            type="number"
+            placeholder="Minimum repositories"
+            value={minRepos}
+            onChange={(e) => setMinRepos(e.target.value)}
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          />
+        </div>
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
+          Search
+        </button>
       </form>
 
-      {loading && <p className="text-blue-500">Loading...</p>}
-      {error && <p className="text-red-500">{error}</p>}
+      {loading && <p className="text-center">Loading...</p>}
 
-      {/* Affichage du résultat pour la recherche basique */}
-      {user && (
-        <div className="border p-4 rounded flex gap-4 items-center mt-4">
-          <img src={user.avatar_url} alt="User Avatar" className="w-16 h-16 rounded-full" />
-          <div>
-            <h2 className="font-bold">{user.login}</h2>
-            <p>Location: {user.location || 'N/A'}</p>
-            <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-              GitHub Profile
-            </a>
-          </div>
+      {error && <p className="text-center text-red-500">Looks like we cant find the user.</p>}
+
+      {searchResults.length > 0 && (
+        <div>
+          {searchResults.map((user) => (
+            <div key={user.id} className="border rounded p-4 mb-4">
+              <img src={user.avatar_url} alt="User Avatar" className="w-20 h-20 rounded-full mb-2" />
+              <p>Login: {user.login}</p>
+              <p>Name: {user.name || 'Not available'}</p>
+              <p>Location: {user.location || 'Not available'}</p>
+              <p>Repositories: {user.public_repos}</p>
+              <p>
+                Profile: <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+                  {user.html_url}
+                </a>
+              </p>
+            </div>
+          ))}
+          {hasMore && (
+            <button
+              onClick={handleLoadMore}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Load More
+            </button>
+          )}
         </div>
       )}
-
-      {/* Affichage des résultats pour la recherche avancée */}
-      <div className="mt-4">
-        {users.length > 0 ? users.map(user => (
-          <div key={user.id} className="border p-4 rounded flex gap-4 items-center">
-            <img src={user.avatar_url} alt="User Avatar" className="w-16 h-16 rounded-full" />
-            <div>
-              <h2 className="font-bold">{user.login}</h2>
-              <p>Location: {user.location || 'N/A'}</p>
-              <a href={user.html_url} target="_blank" rel="noopener noreferrer" className="text-blue-500">
-                GitHub Profile
-              </a>
-            </div>
-          </div>
-        )) : (!user && <p>No users found</p>)}
-      </div>
     </div>
   );
 }
