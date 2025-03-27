@@ -1,6 +1,6 @@
 // github-user-search/src/components/Search.jsx
 import React, { useState } from 'react';
-import { searchUsers } from '../services/githubService';
+import { fetchAdvancedUserSearch } from '../services/githubService';
 import './Search.css'; // Import Tailwind styles
 
 function Search() {
@@ -22,12 +22,12 @@ function Search() {
     setHasMore(true);
 
     try {
-      const query = `${username} location:${location} repos:>${minRepos}`;
-      const data = await searchUsers(query, 1);
-      setSearchResults(data.items);
-      setHasMore(data.items.length === 30); // Assuming 30 results per page
+      const query = username; // Only search by username for initial query
+      const data = await fetchAdvancedUserSearch(query, location, minRepos);
+      setSearchResults(data);
+      setHasMore(data.length === 30); // Assuming 30 results per page
     } catch (err) {
-      setError(err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -40,13 +40,13 @@ function Search() {
     const nextPage = page + 1;
 
     try {
-      const query = `${username} location:${location} repos:>${minRepos}`;
-      const data = await searchUsers(query, nextPage);
-      setSearchResults([...searchResults, ...data.items]);
-      setHasMore(data.items.length === 30);
+      const query = username;
+      const data = await fetchAdvancedUserSearch(query, location, minRepos);
+      setSearchResults([...searchResults, ...data]);
+      setHasMore(data.length === 30);
       setPage(nextPage);
     } catch (err) {
-      setError(err);
+      setError(err.message);
     } finally {
       setLoading(false);
     }
@@ -95,7 +95,7 @@ function Search() {
 
       {loading && <p className="text-center">Loading...</p>}
 
-      {error && <p className="text-center text-red-500">Looks like we cant find the user.</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
 
       {searchResults.length > 0 && (
         <div>
