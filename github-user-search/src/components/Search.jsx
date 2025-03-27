@@ -1,93 +1,126 @@
+// github-user-search/src/components/Search.jsx
 import React, { useState } from 'react';
-import { fetchAdvancedUserData } from '../services/githubService';
+import { searchUsers } from '../services/githubService';
+import './Search.css'; // Import Tailwind styles
 
 function Search() {
   const [username, setUsername] = useState('');
   const [location, setLocation] = useState('');
   const [minRepos, setMinRepos] = useState('');
-  const [userData, setUserData] = useState(null);
+  const [searchResults, setSearchResults] = useState([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
+  const [page, setPage] = useState(1);
+  const [hasMore, setHasMore] = useState(true);
 
   const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true);
     setError(null);
-    setUserData(null);
+    setSearchResults([]);
+    setPage(1);
+    setHasMore(true);
 
     try {
-      const data = await fetchAdvancedUserData(username, location, minRepos);
-      if (data.total_count === 0) {
-        throw new Error("No users found with these criteria");
-      }
-      setUserData(data.items);
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, 1);
+      setSearchResults(data.items);
+      setHasMore(data.items.length === 30); // Assuming 30 results per page
     } catch (err) {
-      setError("Looks like we can't find the user");
+      setError(err);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleLoadMore = async () => {
+    if (!hasMore || loading) return;
+
+    setLoading(true);
+    const nextPage = page + 1;
+
+    try {
+      const query = `${username} location:${location} repos:>${minRepos}`;
+      const data = await searchUsers(query, nextPage);
+      setSearchResults([...searchResults, ...data.items]);
+      setHasMore(data.items.length === 30);
+      setPage(nextPage);
+    } catch (err) {
+      setError(err);
     } finally {
       setLoading(false);
     }
   };
 
   return (
-    <div className="max-w-lg mx-auto p-4">
-      <form onSubmit={handleSubmit} className="space-y-4">
-        <div>
+    <div className="container mx-auto p-4">
+      <form onSubmit={handleSubmit} className="mb-4">
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Username:</label>
           <input
             type="text"
             placeholder="Enter GitHub username"
             value={username}
             onChange={(e) => setUsername(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <div>
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Location:</label>
           <input
             type="text"
-            placeholder="Location"
+            placeholder="Enter location"
             value={location}
             onChange={(e) => setLocation(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <div>
+        <div className="mb-2">
+          <label className="block text-gray-700 text-sm font-bold mb-2">Min Repositories:</label>
           <input
             type="number"
-            placeholder="Min repositories"
+            placeholder="Minimum repositories"
             value={minRepos}
             onChange={(e) => setMinRepos(e.target.value)}
-            className="w-full px-4 py-2 border rounded-md"
+            className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
           />
         </div>
-        <button type="submit" className="w-full px-4 py-2 bg-blue-500 text-white rounded-md">
+        <button
+          type="submit"
+          className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+        >
           Search
         </button>
       </form>
 
-      {loading && <p>Loading...</p>}
-      {error && <p>{error}</p>}
+      {loading && <p className="text-center">Loading...</p>}
 
-      {userData && (
-        <div className="mt-6 space-y-4">
-          {userData.map((user) => (
-            <div key={user.id} className="p-4 border rounded-md">
-              <img
-                src={user.avatar_url}
-                alt="User Avatar"
-                className="w-24 h-24 rounded-full"
-              />
-              <h2>{user.name || user.login}</h2>
-              <p>Location: {user.location || "N/A"}</p>
+      {error && <p className="text-center text-red-500">Looks like we cant find the user.</p>}
+
+      {searchResults.length > 0 && (
+        <div>
+          {searchResults.map((user) => (
+            <div key={user.id} className="border rounded p-4 mb-4">
+              <img src={user.avatar_url} alt="User Avatar" className="w-20 h-20 rounded-full mb-2" />
+              <p>Login: {user.login}</p>
+              <p>Name: {user.name || 'Not available'}</p>
+              <p>Location: {user.location || 'Not available'}</p>
               <p>Repositories: {user.public_repos}</p>
-              <a
-                href={user.html_url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="text-blue-500"
-              >
-                GitHub Profile
-              </a>
+              <p>
+                Profile: <a href={user.html_url} target="_blank" rel="noopener noreferrer">
+                  {user.html_url}
+                </a>
+              </p>
             </div>
           ))}
+          {hasMore && (
+            <button
+              onClick={handleLoadMore}
+              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded focus:outline-none focus:shadow-outline"
+            >
+              Load More
+            </button>
+          )}
         </div>
       )}
     </div>
