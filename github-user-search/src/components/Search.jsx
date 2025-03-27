@@ -16,9 +16,14 @@ function Search() {
   const fetchUserData = async (query, currentPage) => {
     try {
       const data = await searchUsers(query, currentPage);
+      
+      if (data.items.length === 0) {
+        setError("Looks like we can't find the user");
+      }
+
       return data.items;
     } catch (err) {
-      setError(err);
+      setError("Looks like we can't find the user");
       return [];
     }
   };
@@ -97,7 +102,7 @@ function Search() {
 
       {loading && <p className="text-center">Loading...</p>}
 
-      {error && <p className="text-center text-red-500">Looks like we can't find the user.</p>}
+      {error && <p className="text-center text-red-500">{error}</p>}
 
       {searchResults.length > 0 && (
         <div>
