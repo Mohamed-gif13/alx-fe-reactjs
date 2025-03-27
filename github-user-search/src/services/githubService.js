@@ -25,7 +25,13 @@ export const fetchAdvancedUserSearch = async (query, location, minRepos) => {
 
     // Make API request using the GitHub Search API
     const response = await axios.get(`${BASE_URL}/search/users?${searchQuery}`);
-    return response.data.items; // Return list of users that match search
+    
+    // Check if the response contains the expected 'items' field
+    if (response.data && response.data.items) {
+      return response.data.items; // Return list of users that match search
+    } else {
+      throw new Error("No users found");
+    }
   } catch (error) {
     throw new Error("Error fetching search results");
   }
