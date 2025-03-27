@@ -1,27 +1,29 @@
-import axios from "axios";
+// src/services/githubService.js
 
 const BASE_URL = "https://api.github.com";
 
-// Recherche d'un utilisateur par son username
-export const fetchUserData = async (username) => {
-  try {
-    const response = await axios.get(`${BASE_URL}/users/${username}`);
-    return response.data; // Retourne les données de l'utilisateur
-  } catch (error) {
+export async function fetchUserData(username) {
+  const response = await fetch(`${BASE_URL}/users/${username}`);
+  if (!response.ok) {
     throw new Error("User not found");
   }
-};
+  return response.json();
+}
 
-// Recherche avancée par filtres (nom, localisation, min repos)
-export const fetchAdvancedUserSearch = async (query, location, minRepos) => {
-  try {
-    let searchQuery = `q=${query}`;
-    if (location) searchQuery += `+location:${location}`;
-    if (minRepos) searchQuery += `+repos:>=${minRepos}`;
+export async function fetchAdvancedUserSearch(username, location, minRepos, page = 1) {
+  let query = [];
+  if (username) query.push(`user:${username}`);
+  if (location) query.push(`location:${location}`);
+  if (minRepos) query.push(`repos:>=${minRepos}`);
 
-    const response = await axios.get(`${BASE_URL}/search/users?${searchQuery}`);
-    return response.data.items;
-  } catch (error) {
-    throw new Error("Error fetching search results");
+  const searchQuery = query.join("+");
+  const url = `${BASE_URL}/search/users?q=${searchQuery}&page=${page}&per_page=30`;
+
+  const response = await fetch(url);
+  if (!response.ok) {
+    throw new Error("Search failed");
   }
-};
+
+  const data = await response.json();
+  return data.items || [];
+}
