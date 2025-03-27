@@ -1,32 +1,35 @@
-import React, { useState } from "react";
-import Search from "./components/Search";
-import githubService from "./services/githubService";
+import { useState } from 'react'
+import reactLogo from './assets/react.svg'
+import viteLogo from '/vite.svg'
+import './App.css'
 
 function App() {
-  const [user, setUser] = useState(null);    // To store user data
-  const [error, setError] = useState("");    // To store error message
-  const [loading, setLoading] = useState(false); // To indicate loading state
-
-  const handleSearch = async (username) => {
-    setLoading(true);       // Set loading to true before making API call
-    setError("");           // Clear previous error messages
-    setUser(null);          // Clear previous user data
-
-    try {
-      const data = await githubService.fetchUserData(username);  // Call API
-      setUser(data);         // Set the fetched user data
-    } catch (err) {
-      setError("Looks like we can't find the user");  // Handle error
-    } finally {
-      setLoading(false);  // Set loading to false after API call
-    }
-  };
+  const [count, setCount] = useState(0)
 
   return (
-    <div>
-      <Search onSearch={handleSearch} loading={loading} error={error} user={user} />
-    </div>
-  );
+    <>
+      <div>
+        <a href="https://vite.dev" target="_blank">
+          <img src={viteLogo} className="logo" alt="Vite logo" />
+        </a>
+        <a href="https://react.dev" target="_blank">
+          <img src={reactLogo} className="logo react" alt="React logo" />
+        </a>
+      </div>
+      <h1>Vite + React</h1>
+      <div className="card">
+        <button onClick={() => setCount((count) => count + 1)}>
+          count is {count}
+        </button>
+        <p>
+          Edit <code>src/App.jsx</code> and save to test HMR
+        </p>
+      </div>
+      <p className="read-the-docs">
+        Click on the Vite and React logos to learn more
+      </p>
+    </>
+  )
 }
 
-export default App;
+export default App
