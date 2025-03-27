@@ -1,7 +1,7 @@
 import axios from "axios";
 
 // Base URL for GitHub API
-const BASE_URL = "https://api.github.com";
+const BASE_URL = "https://api.github.com/search/users?q";
 
 // Fonction pour effectuer une recherche avancée d'utilisateurs avec des filtres supplémentaires
 export const fetchAdvancedUserSearch = async (query, location, minRepos) => {
